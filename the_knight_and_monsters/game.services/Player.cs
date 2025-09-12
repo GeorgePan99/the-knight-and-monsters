@@ -1,35 +1,38 @@
 namespace game.services;
 
-public class Player(
-    int health,
-    int attack,
-    int armor,
-    int lowerDamage,
-    int upperDamage
-    ): Creature
+public class Player : Creature, IHealable
 {
-    public override int Health { get; set; } = health;
-    public override int Attack { get; set; }  = attack;
-    public override int Armor { get; set; }  = armor;
-    public override Range Damage { get; set; } = lowerDamage..(upperDamage + 1);
-    private readonly int _regenerationPercentage = (int)(0.3f * health);
-    private readonly int _maxHealth = health;
-    public int FlaskAmount { get; private set; } = 4;
-
-
-    public void Heal()
+    private readonly int _maxHealth;
+    private int _flaskAmount = 4;
+    private readonly float _healingPercentage = 0.3f;
+    public Player(
+        string name,
+        int health,
+        int attack,
+        int armor) : base(name, health, attack, armor)
     {
-        if (FlaskAmount == 0)
-        {
-            return;
-        }
-        if (_regenerationPercentage + Health > Health)
+        _maxHealth = health;
+    }
+
+    public string Heal()
+    {
+        if (_flaskAmount == 0)
+            return "Исцелить себя не получится." +
+                   "Все зелья потрачены!";
+        
+        if (Health ==  _maxHealth)
+            return "Использовать зелье нет необходимости, "+
+                   "здоровье на максимуме!";
+        
+
+        _flaskAmount -= 1;
+        int healingBonus = (int)(_maxHealth * _healingPercentage);
+        if (healingBonus + Health > _maxHealth)
         {
             Health = _maxHealth;
+            return $"Игрок {Name} вылечил своё здоровье на максимум!";
         }
-        else
-        {
-            Health = Health + _regenerationPercentage;
-        }
+        Health += healingBonus;
+        return $"Игрок {Name} исцелил себя на {healingBonus}";
     }
 }
