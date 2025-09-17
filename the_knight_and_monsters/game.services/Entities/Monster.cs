@@ -1,4 +1,7 @@
-namespace game.services;
+using game.services.Abstractions;
+
+
+namespace game.services.Entities;
 
 public class Monster : Creature
 {

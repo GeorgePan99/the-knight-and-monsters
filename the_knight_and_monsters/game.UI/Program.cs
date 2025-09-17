@@ -1,7 +1,4 @@
-﻿using game.services;
+﻿using game.services.Abstractions;
+using game.services.Entities;
 
-
-Creature knight = new Player("Goga", 40, 20, 20);
-Creature gremlin = new Monster("Tar", 35, 15, 10);
-
-Console.WriteLine(knight.DealDamage(gremlin));
+Creature knight = new Player("Goga", 30, 25, 15);

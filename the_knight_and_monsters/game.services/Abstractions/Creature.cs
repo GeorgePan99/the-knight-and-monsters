@@ -1,4 +1,4 @@
-﻿namespace game.services
+﻿namespace game.services.Abstractions
 {
     public abstract class Creature
     {
@@ -6,17 +6,16 @@
         private int _armor;
         private int _health;
         private readonly Range _damage = 1..7;
-        private bool _isSuccessPunch = false;
-        public string Name { get; private set; }
+        private bool _isSuccessPunch;
+        public string Name { get; }
         public int Health
         {
             get => _health;
             protected set
             {
-                if (value is < 0)
+                if (value < 0)
                     throw new ArgumentException("Здоровье не может быть меньше нуля!");
-                else
-                    _health = value;
+                _health = value;
             }
         }
         public int Attack
@@ -26,9 +25,8 @@
             {
                 if (value is < 1 or > 30 )
                     throw new ArgumentException("Атака должна быть в диапазоне " +
-                                                "от 1 до 30 единиц");
-                else
-                    _attack = value;
+                                                "от 1 до 30 единиц"); 
+                _attack = value;
             }
         }
         public int Armor
@@ -39,8 +37,7 @@
                 if (value is < 1 or > 31)
                     throw new ArgumentException("Защита должна быть в диапазоне " +
                                                 "от 1 до 30 единиц");
-                else
-                    _armor = value;
+                _armor = value;
             }
         }
 
@@ -63,7 +60,7 @@
             
             for (int i = 0; i < attackModifier; i++)
             {
-                if (dice.Next(1, 7) is > 4)
+                if (dice.Next(1, 7) > 4)
                 {
                     _isSuccessPunch = true;
                     break;

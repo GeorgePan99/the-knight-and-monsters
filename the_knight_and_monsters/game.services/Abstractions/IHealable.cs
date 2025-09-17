@@ -1,4 +1,4 @@
-namespace game.services;
+namespace game.services.Abstractions;
 
 public interface IHealable
 {
