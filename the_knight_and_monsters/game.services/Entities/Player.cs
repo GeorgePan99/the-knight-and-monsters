@@ -3,13 +3,20 @@ using game.services.Abstractions;
 
 namespace game.services.Entities;
 
-public class Player : Creature, IHealable
+public class Player : Creature, IHealable, IWeaponable
 {
     private readonly int _maxHealth;
     private int _flaskAmount = 4;
     private readonly float _healingPercentage = 0.3f;
     private Weapon _weapon;
-    public Weapon CurrentWeapon => _weapon;
+    public Weapon CurrentWeapon
+    {
+        get => _weapon;
+        private set
+        {
+            _weapon = value;
+        }
+    }
     public Player(
         string name,
         int health,
@@ -42,17 +49,24 @@ public class Player : Creature, IHealable
     }
     public string EquipWeapon(Weapon weapon)
     {
-        if (_weapon != null)
-            return $"{Name} уже имеет в своем арсенале {_weapon.Name}!";
+        if (CurrentWeapon != null)
+            return $"{Name} уже имеет в своем арсенале {CurrentWeapon.Name}!";
         
-        if (_weapon == weapon)
-            return $"{Name} уже экипировал себе {_weapon.Name}!";
-        _weapon = weapon;
-        return $"{Name} взял себе {_weapon.Name}!";
+        if (CurrentWeapon == weapon)
+            return $"{Name} уже экипировал себе {CurrentWeapon.Name}!";
+        CurrentWeapon = weapon;
+        return $"{Name} взял себе {weapon.Name}!";
     }
-    public string UnequipWeapon(Weapon weapon)
+    public string UnequipWeapon()
     {
-        return "Тут должен быть метод снятия оружия";
+        if (CurrentWeapon == null)
+        {
+            return $"{Name} не имеет оружия.";
+        }
+
+        string nameFormerWeapon = CurrentWeapon.Name;
+        CurrentWeapon = null;
+        return $"{Name} снял {nameFormerWeapon}.";
     }
 
     public string DealDamageWithWeapon(Creature enemy)

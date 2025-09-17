@@ -1,4 +1,6 @@
 ﻿using game.services.Abstractions;
 using game.services.Entities;
+using game.UI;
 
-Creature knight = new Player("Goga", 30, 25, 15);
+Game game = new Game();
+game.GamePlay();

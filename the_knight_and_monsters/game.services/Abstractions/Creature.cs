@@ -70,6 +70,11 @@
             if (_isSuccessPunch)
             {
                 int currentDamage = dice.Next(_damage.Start.Value, _damage.End.Value);
+                if (currentDamage >= enemy.Health)
+                {
+                    enemy.Health = 0;
+                    return $"{Name} сразил {enemy.Name}!";
+                }
                 enemy.Health -= currentDamage;
                 _isSuccessPunch = false;
                 return $"Игрок {Name} нанес {enemy.Name} {currentDamage} урона!";
